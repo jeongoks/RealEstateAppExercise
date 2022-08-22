@@ -1,8 +1,11 @@
 ﻿using RealEstateApp.Models;
 using RealEstateApp.Services;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using TinyIoC;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,6 +15,7 @@ namespace RealEstateApp
     public partial class PropertyListPage : ContentPage
     {
         IRepository Repository;
+        private Location _location;
         public ObservableCollection<PropertyListItem> PropertiesCollection { get; } = new ObservableCollection<PropertyListItem>(); 
 
         public PropertyListPage()
@@ -40,12 +44,31 @@ namespace RealEstateApp
         void LoadProperties()
         {
             PropertiesCollection.Clear();
-            var items = Repository.GetProperties();
 
-            foreach (Property item in items)
+            try
             {
-                PropertiesCollection.Add(new PropertyListItem(item));
+                var properties = Repository.GetProperties();
+                var items = new List<PropertyListItem>();
+
+                foreach (Property property in properties)
+                {
+                    var item = new PropertyListItem(property);
+                    if (_location != null)
+                    {
+                        item.Distance = _location.CalculateDistance((double)property.Latitude, (double)property.Longitude, DistanceUnits.Kilometers);
+                    }
+                    items.Add(item);
+                }
+                foreach (var item in items.OrderBy(x => x.Distance))
+                {
+                    PropertiesCollection.Add(item);
+                }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }            
         }
 
         private async void ItemsListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -57,5 +80,15 @@ namespace RealEstateApp
         {
             await Navigation.PushAsync(new AddEditPropertyPage());
         }    
+
+        private async void SortProperties_Clicked(object sender, EventArgs e)
+        {
+            _location = await Geolocation.GetLastKnownLocationAsync();
+            if (_location == null)
+            {
+                _location = await Geolocation.GetLocationAsync();
+            }
+            LoadProperties();
+        }
     }
 }

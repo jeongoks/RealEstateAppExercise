@@ -23,6 +23,13 @@ namespace RealEstateApp.Models
             }
         }
 
+        private double? _distance;
+
+        public double? Distance
+        {
+            get => _distance;
+            set { _distance = value; RaisePropertyChanged(); }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
