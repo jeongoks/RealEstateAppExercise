@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="RealEstateApp.AppShell"
+       xmlns:local="clr-namespace:RealEstateApp"
+       xmlns:fa="clr-namespace:FontAwesome"
+       Shell.TabBarIsVisible="False">
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Properties" ContentTemplate="{DataTemplate local:PropertyListPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FA-solid" 
+                                 Glyph="{x:Static fa:IconFont.Home}"
+                                 Color="Black"/>
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="About" ContentTemplate="{DataTemplate local:AboutPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FA-solid" 
+                                 Glyph="{x:Static fa:IconFont.User}"
+                                 Color="Black"/>
+            </ShellContent.Icon>
+        </ShellContent>        
+    </FlyoutItem>
+</Shell>

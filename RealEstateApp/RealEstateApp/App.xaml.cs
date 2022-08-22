@@ -14,7 +14,7 @@ namespace RealEstateApp
             var container = TinyIoCContainer.Current;
             container.Register<IRepository, MockRepository>();
 
-            MainPage = new MainPage();
+            MainPage = new AppShell();
         }
 
 
