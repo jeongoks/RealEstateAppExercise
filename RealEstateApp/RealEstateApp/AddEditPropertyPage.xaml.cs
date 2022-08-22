@@ -1,8 +1,12 @@
 ﻿using RealEstateApp.Models;
 using RealEstateApp.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading;
 using TinyIoC;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -101,5 +105,48 @@ namespace RealEstateApp
         {
             await Navigation.PopToRootAsync();
         }
+
+        #region GeoLocation
+        CancellationTokenSource cts;
+
+        private async void GetCurrentLocation_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+                cts = new CancellationTokenSource();
+                var location = await Geolocation.GetLocationAsync(request, cts.Token);
+
+                if (location != null)
+                {
+                    Property.Latitude = location.Latitude;
+                    Property.Longitude = location.Longitude;
+                }
+            }
+            catch (FeatureNotSupportedException fnsEx)
+            {
+                // Handle not supported on device exception
+            }
+            catch (FeatureNotEnabledException fneEx)
+            {
+                // Handle not enabled on device exception
+            }
+            catch (PermissionException pEx)
+            {
+                // Handle permission exception
+            }
+            catch (Exception ex)
+            {
+                // Unable to get location
+            }
+        }
+
+        protected override void OnDisappearing()
+        {
+            if (cts != null && !cts.IsCancellationRequested)
+                cts.Cancel();
+            base.OnDisappearing();
+        }
+        #endregion
     }
 }

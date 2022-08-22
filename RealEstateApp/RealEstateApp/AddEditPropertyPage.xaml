@@ -37,6 +37,31 @@
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
+                                <Span Text="{Static fa:IconFont.Globe}"/>
+                                <Span Text=" Location"/>
+                            </FormattedString>
+                        </Label.FormattedText>                        
+                    </Label>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label FontFamily="FA-solid"
+                               Text="{Binding Property.Latitude}"
+                               HorizontalOptions="StartAndExpand"
+                               VerticalOptions="Center"/>
+                        <Label FontFamily="FA-solid"
+                               Text="{Binding Property.Longitude}"
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="Center"/>
+                        <Button x:Name="GetCurrentLocation"
+                                FontFamily="FA-solid"
+                                Text="{x:Static fa:IconFont.Thumbtack}"
+                                Clicked="GetCurrentLocation_Clicked"
+                                HorizontalOptions="EndAndExpand"/>
+                    </StackLayout>
+
+                    <Label FontSize="Medium" FontFamily="FA-solid">
+                        <Label.FormattedText>
+                            <FormattedString>
                                 <Span Text="{Static fa:IconFont.Tag}"/>
                                 <Span Text=" " />
                                 <Span Text="Price" />
