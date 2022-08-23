@@ -118,6 +118,8 @@ namespace RealEstateApp
         {
             if (IsValid() == false)
             {
+                // Vibrate assignment 3.5
+                HapticFeedback.Perform(HapticFeedbackType.LongPress);
                 StatusMessage = "Please fill in all required fields";
                 StatusColor = Color.Red;
             }
