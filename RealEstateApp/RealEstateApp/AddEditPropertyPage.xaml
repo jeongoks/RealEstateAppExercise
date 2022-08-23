@@ -16,10 +16,26 @@
 
     <ContentPage.Content>
         <StackLayout BackgroundColor="#E8E8E8">
+            <StackLayout Orientation="Horizontal">
+                <Button FontFamily="FA-solid"
+                        Text="{x:Static fa:IconFont.Lightbulb}"
+                        TextColor="Black"
+                        IsVisible="{Binding IsShown, Converter={converters:InverseBoolConverter}}"
+                        Clicked="TurnFlashlightOn_Clicked"/>
+                <Button FontFamily="FA-solid"
+                        Text="{x:Static fa:IconFont.Lightbulb}"
+                        TextColor="Yellow"
+                        IsVisible="{Binding IsShown}"
+                        Clicked="TurnFlashlightOff_Clicked"/>
+            </StackLayout>            
             <Label
                 BackgroundColor="{Binding StatusColor}"
                 IsVisible="{Binding StatusMessage, Converter={converters:StringBoolConverter}}"
                 Text="{Binding StatusMessage}" />
+            <Label
+                BackgroundColor="{Binding BatteryMessageColor}"
+                IsVisible="{Binding BatteryMessage, Converter={converters:StringBoolConverter}}"
+                Text="{Binding BatteryMessage}" />
             <ScrollView VerticalOptions="FillAndExpand">
                 <StackLayout Padding="15" Spacing="20">
 

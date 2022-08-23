@@ -52,16 +52,52 @@ namespace RealEstateApp
         public string StatusMessage { get; set; }
         public Color StatusColor { get; set; } = Color.White;
         public bool IsOnline { get; set; }
-        #endregion       
+
+        #region BATTERY PROPERTIES
+        private Color _batteryMessageColor;
+
+        public Color BatteryMessageColor
+        {
+            get => _batteryMessageColor;
+            set { _batteryMessageColor = value; OnPropertyChanged(nameof(BatteryMessageColor)); }
+        }
+
+        private string _batteryMessage;
+
+        public string BatteryMessage
+        {
+            get => _batteryMessage;
+            set { _batteryMessage = value; OnPropertyChanged(nameof(BatteryMessage)); }
+        }
+        #endregion
+
+        #region FLASHLIGHT PROPERTIES
+        private CancellationTokenSource _cancellationToken;
+
+        private bool _isShown;
+
+        public bool IsShown
+        {
+            get => _isShown;
+            set { _isShown = value; OnPropertyChanged(nameof(IsShown)); }
+        }
+
+        #endregion
+        #endregion
 
         protected override void OnAppearing()
         {
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            BatteryStatus();
+            Battery.BatteryInfoChanged += Battery_BatteryInfoChanged;
+            Battery.EnergySaverStatusChanged += OnEnergySaverStatusChanged;
         }
 
         protected override void OnDisappearing()
         {
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+            Battery.BatteryInfoChanged -= Battery_BatteryInfoChanged;
+            Battery.EnergySaverStatusChanged -= OnEnergySaverStatusChanged;
         }
 
         public AddEditPropertyPage(Property property = null)
@@ -111,6 +147,56 @@ namespace RealEstateApp
                 DisplayAlert("Offline", "You're not connected to the wifi.", "Ok");
                 IsOnline = false;
             }
+        }
+        #endregion
+
+        #region BATTERY
+        private void BatteryStatus()
+        {            
+            if (Battery.ChargeLevel < 0.2)
+            {
+                BatteryMessage = "Battery is low. Please save your changes!";
+                if (Battery.State != BatteryState.Charging)
+                {
+                    BatteryMessageColor = Color.Red;
+                }
+                else
+                {
+                    BatteryMessageColor = Color.Yellow;
+                }
+                if (Battery.EnergySaverStatus == EnergySaverStatus.On)
+                {
+                    BatteryMessageColor = Color.Green;
+                }
+            }
+            else
+            {
+                BatteryMessage = null;
+            }
+        }
+
+        private void Battery_BatteryInfoChanged(object sender, BatteryInfoChangedEventArgs e)
+        {
+            BatteryStatus();
+        }
+
+        private void OnEnergySaverStatusChanged(object sender, EnergySaverStatusChangedEventArgs e)
+        {
+            BatteryStatus();
+        }
+        #endregion
+
+        #region FLASHLIGHT
+        private async void TurnFlashlightOn_Clicked(object sender, System.EventArgs e)
+        {
+            IsShown = true;
+            await Flashlight.TurnOnAsync();
+        }
+
+        private async void TurnFlashlightOff_Clicked(object sender, System.EventArgs e)
+        {
+            IsShown = false;
+            await Flashlight.TurnOffAsync();
         }
         #endregion
 
