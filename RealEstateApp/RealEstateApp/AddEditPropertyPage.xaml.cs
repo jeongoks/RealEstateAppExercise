@@ -200,6 +200,13 @@ namespace RealEstateApp
         }
         #endregion
 
+        #region COMPASS.
+        private async void GetCurrentAspect_Clicked(object sender, System.EventArgs e)
+        {
+            Navigation.PushModalAsync(new CompassPage(Property));
+        }
+        #endregion
+
         private async void SaveProperty_Clicked(object sender, System.EventArgs e)
         {
             if (IsValid() == false)

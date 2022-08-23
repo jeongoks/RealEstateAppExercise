@@ -87,6 +87,26 @@
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
+                                <Span Text="{Static fa:IconFont.DraftingCompass}"/>
+                                <Span Text=" Aspect"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Grid HorizontalOptions="FillAndExpand" ColumnDefinitions="*, Auto">
+                        <Entry Text="{Binding Property.Aspect}"
+                               HorizontalOptions="FillAndExpand"
+                               Grid.Column="0"
+                               FontSize="Medium"
+                               VerticalOptions="Center"/>
+                        <Button Grid.Column="1"
+                                FontFamily="FA-solid"
+                                Text="{x:Static fa:IconFont.Compass}" 
+                                Clicked="GetCurrentAspect_Clicked"/>
+                    </Grid>
+
+                    <Label FontSize="Medium" FontFamily="FA-solid">
+                        <Label.FormattedText>
+                            <FormattedString>
                                 <Span Text="{Static fa:IconFont.Tag}"/>
                                 <Span Text=" " />
                                 <Span Text="Price" />
