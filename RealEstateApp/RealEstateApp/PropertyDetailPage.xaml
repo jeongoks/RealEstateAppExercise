@@ -4,16 +4,17 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fa="clr-namespace:FontAwesome"
+             xmlns:converters="clr-namespace:RealEstateApp.Converters"
              mc:Ignorable="d"
              x:Class="RealEstateApp.PropertyDetailPage"
              Title="{Binding Property.Address}">
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Clicked="EditProperty_Clicked"  Text="Edit" />
     </ContentPage.ToolbarItems>
 
     <ScrollView VerticalOptions="FillAndExpand">
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" 
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto, Auto" 
               Padding="15">
             <Image
                 Grid.Row="0"
@@ -69,19 +70,38 @@
                 Grid.Row="4"
                 FontSize="14"
                 Text="{Binding Property.LandSize, StringFormat='Land size: {0} &#x33a1;'}" />
+            <StackLayout Grid.Row="5" Orientation="Horizontal">
+                <Label Margin="0,20,0,0"
+                       FontAttributes="Bold"
+                       FontSize="14"
+                       Text="Description:"
+                       VerticalOptions="Start" />
+                <Button FontFamily="FA-solid"
+                        Text="{x:Static fa:IconFont.Play}"
+                        Clicked="SpeakButton_Clicked"
+                        IsVisible="{Binding IsSpeaking, Converter={converters:InverseBoolConverter}}"
+                        HorizontalOptions="Center"/>
+                <Button FontFamily="FA-solid"
+                        Text="{x:Static fa:IconFont.Stop}"
+                        Clicked="CancelSpeechButton_Clicked"
+                        IsVisible="{Binding IsSpeaking}"
+                        HorizontalOptions="Center"/>
+            </StackLayout>
+            <Grid Grid.Row="6" 
+                  RowDefinitions="*,*"
+                  ColumnDefinitions="2*,6*">
+                <Label Grid.Row="0" Grid.Column="0" Text="Pitch" />
+                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding SelectedPitch}" />
+                <Label Grid.Row="1" Grid.Column="0" Text="Volume" />
+                <Slider Grid.Row="1" Grid.Column="1" Value="{Binding SelectedVolume}" />
+            </Grid>
             <Label
-                Grid.Row="5"
-                Margin="0,20,0,0"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Description:" />
-            <Label
-                Grid.Row="6"
+                Grid.Row="7"
                 Margin="0,0,0,20"
                 FontSize="14"
                 Text="{Binding Property.Description}" />
             <Label
-                Grid.Row="7"
+                Grid.Row="8"
                 FontAttributes="Bold"
                 FontSize="14"
                 Text="Listed by:" />
