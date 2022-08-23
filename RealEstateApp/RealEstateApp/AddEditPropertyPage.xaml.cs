@@ -31,7 +31,6 @@ namespace RealEstateApp
                 {
                     SelectedAgent = Agents.FirstOrDefault(x => x.Id == _property?.AgentId);
                 }
-
             }
         }
 
@@ -52,8 +51,18 @@ namespace RealEstateApp
 
         public string StatusMessage { get; set; }
         public Color StatusColor { get; set; } = Color.White;
-        public bool IsOnline => Connectivity.NetworkAccess == NetworkAccess.Internet;
-        #endregion
+        public bool IsOnline { get; set; }
+        #endregion       
+
+        protected override void OnAppearing()
+        {
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+        }
+
+        protected override void OnDisappearing()
+        {
+            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+        }
 
         public AddEditPropertyPage(Property property = null)
         {
@@ -76,19 +85,34 @@ namespace RealEstateApp
 
             BindingContext = this;
 
+            #region CONNECTIVITY.
             if (!profiles.Contains(ConnectionProfile.WiFi))
             {
+                IsOnline = false;
                 DisplayAlert("Offline", "You're not connected to the wifi.", "Ok");
             }
-        }        
+            if (profiles.Contains(ConnectionProfile.WiFi))
+            {
+                IsOnline = true;
+            }
+            #endregion
+        }
 
-
+        #region CONNECTIVITY.
         void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            var access = e.NetworkAccess;
             var profiles = e.ConnectionProfiles;
-            OnPropertyChanged(nameof(IsOnline));
+            if (Connectivity.NetworkAccess == e.NetworkAccess && profiles.Contains(ConnectionProfile.WiFi))
+            {
+                IsOnline = true;
+            }
+            else if (!profiles.Contains(ConnectionProfile.WiFi))
+            {
+                DisplayAlert("Offline", "You're not connected to the wifi.", "Ok");
+                IsOnline = false;
+            }
         }
+        #endregion
 
         private async void SaveProperty_Clicked(object sender, System.EventArgs e)
         {
@@ -120,8 +144,8 @@ namespace RealEstateApp
             await Navigation.PopToRootAsync();
         }
 
+        #region GEOLOCATION
         CancellationTokenSource cts;
-
         private async void GetCurrentLocation_Clicked(object sender, EventArgs e)
         {
             try
@@ -162,14 +186,9 @@ namespace RealEstateApp
                 // Unable to get location
             }
         }
+        #endregion
 
-        protected override void OnDisappearing()
-        {
-            if (cts != null && !cts.IsCancellationRequested)
-                cts.Cancel();
-            base.OnDisappearing();
-        }
-
+        #region GEOCODING.
         private async void GetDistanceFromAddress_Clicked(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(Property.Address))
@@ -185,5 +204,6 @@ namespace RealEstateApp
                 Property.Longitude = location.Longitude;
             }
         }
+        #endregion
     }
 }

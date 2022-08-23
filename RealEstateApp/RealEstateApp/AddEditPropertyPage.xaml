@@ -58,15 +58,14 @@
                                 Grid.Column="2"
                                 Text="{x:Static fa:IconFont.Thumbtack}"
                                 Clicked="GetCurrentLocation_Clicked"
-                                HorizontalOptions="End"
-                                IsVisible="{Binding IsOnline}"/>
+                                HorizontalOptions="End"/>
                         <Button x:Name="GetDistanceFromAddress"
                                 FontFamily="FA-solid"
                                 Grid.Column="3"
                                 Text="{x:Static fa:IconFont.Home}"
                                 Clicked="GetDistanceFromAddress_Clicked"
                                 HorizontalOptions="EndAndExpand"
-                                IsVisible="{Binding IsOnline}"/>
+                                IsEnabled="{Binding IsOnline}"/>
                     </Grid>
 
                     <Label FontSize="Medium" FontFamily="FA-solid">
