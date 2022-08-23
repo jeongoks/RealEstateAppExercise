@@ -106,14 +106,13 @@ namespace RealEstateApp
             await Navigation.PopToRootAsync();
         }
 
-        #region GeoLocation
         CancellationTokenSource cts;
 
         private async void GetCurrentLocation_Clicked(object sender, EventArgs e)
         {
             try
             {
-                var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium);
                 cts = new CancellationTokenSource();
                 var location = await Geolocation.GetLocationAsync(request, cts.Token);
 
@@ -122,7 +121,16 @@ namespace RealEstateApp
                     Property.Latitude = location.Latitude;
                     Property.Longitude = location.Longitude;
                 }
+
+                var addresses = await Geocoding.GetPlacemarksAsync(location);
+                var address = addresses.FirstOrDefault();
+                if (address != null)
+                {
+                    Property.Address = $"{address.SubThoroughfare} {address.Thoroughfare}, {address.Locality} {address.AdminArea} {address.PostalCode} {address.CountryName}";
+                }
+                OnPropertyChanged(nameof(Property));
             }
+
             catch (FeatureNotSupportedException fnsEx)
             {
                 // Handle not supported on device exception
@@ -147,6 +155,21 @@ namespace RealEstateApp
                 cts.Cancel();
             base.OnDisappearing();
         }
-        #endregion
+
+        private async void GetDistanceFromAddress_Clicked(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Property.Address))
+            {
+                await DisplayAlert("Address is missing", "Please enter an address.", "OK");
+                return;
+            }
+            var locations = await Geocoding.GetLocationsAsync(Property.Address);
+            var location = locations.FirstOrDefault();
+            if (location != null)
+            {
+                Property.Latitude = location.Latitude;
+                Property.Longitude = location.Longitude;
+            }
+        }
     }
 }

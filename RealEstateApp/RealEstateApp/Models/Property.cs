@@ -29,8 +29,8 @@ namespace RealEstateApp.Models
         public int? LandSize { get; set; }
         public string AgentId { get; set; }
         public List<string> ImageUrls { get; set; }
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
+        public double? Latitude { get; set; } = 0;
+        public double? Longitude { get; set; } = 0;
 
         public string MainImageUrl => ImageUrls?.FirstOrDefault() ?? GlobalSettings.Instance.NoImageUrl;
     }

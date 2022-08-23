@@ -40,24 +40,32 @@
                                 <Span Text="{Static fa:IconFont.Globe}"/>
                                 <Span Text=" Location"/>
                             </FormattedString>
-                        </Label.FormattedText>                        
+                        </Label.FormattedText>
                     </Label>
-
-                    <StackLayout Orientation="Horizontal">
-                        <Label FontFamily="FA-solid"
-                               Text="{Binding Property.Latitude}"
+                    <Grid ColumnDefinitions="*, *, 70, 70">
+                        <Label Text="{Binding Property.Latitude}"
+                               LineBreakMode="NoWrap"
+                               Grid.Column="0"
                                HorizontalOptions="StartAndExpand"
-                               VerticalOptions="Center"/>
-                        <Label FontFamily="FA-solid"
-                               Text="{Binding Property.Longitude}"
+                               VerticalOptions="CenterAndExpand"/>
+                        <Label Text="{Binding Property.Longitude}"
+                               LineBreakMode="NoWrap"
+                               Grid.Column="1"
                                HorizontalOptions="CenterAndExpand"
-                               VerticalOptions="Center"/>
+                               VerticalOptions="CenterAndExpand"/>
                         <Button x:Name="GetCurrentLocation"
                                 FontFamily="FA-solid"
+                                Grid.Column="2"
                                 Text="{x:Static fa:IconFont.Thumbtack}"
                                 Clicked="GetCurrentLocation_Clicked"
+                                HorizontalOptions="End"/>
+                        <Button x:Name="GetDistanceFromAddress"
+                                FontFamily="FA-solid"
+                                Grid.Column="3"
+                                Text="{x:Static fa:IconFont.Home}"
+                                Clicked="GetDistanceFromAddress_Clicked"
                                 HorizontalOptions="EndAndExpand"/>
-                    </StackLayout>
+                    </Grid>
 
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
@@ -115,7 +123,7 @@
                         Keyboard="Numeric"
                         ReturnType="Next"
                         Text="{Binding Property.Parking, Converter={converters:NullableIntConverter}}" />
-                    
+
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
@@ -132,7 +140,7 @@
                         Keyboard="Numeric"
                         ReturnType="Next"
                         Text="{Binding Property.LandSize, Converter={converters:NullableIntConverter}}" />
-                    
+
                     <Label FontSize="Medium" FontFamily="FA-solid">
                         <Label.FormattedText>
                             <FormattedString>
