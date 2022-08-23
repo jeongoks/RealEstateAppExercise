@@ -143,6 +143,7 @@ namespace RealEstateApp
 
         private async void CancelSave_Clicked(object sender, System.EventArgs e)
         {
+            HapticFeedback.Perform(HapticFeedbackType.Click);
             await Navigation.PopToRootAsync();
         }
 

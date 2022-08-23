@@ -72,17 +72,19 @@ namespace RealEstateApp
 
         private async void ItemsListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
+            HapticFeedback.Perform(HapticFeedbackType.Click);
             await Navigation.PushAsync(new PropertyDetailPage(e.Item as PropertyListItem));
         }
 
         private async void AddProperty_Clicked(object sender, EventArgs e)
         {
-            
+            HapticFeedback.Perform(HapticFeedbackType.Click);
             await Navigation.PushAsync(new AddEditPropertyPage());
         }    
 
         private async void SortProperties_Clicked(object sender, EventArgs e)
         {
+            HapticFeedback.Perform(HapticFeedbackType.Click);
             _location = await Geolocation.GetLocationAsync();
             LoadProperties();
         }
