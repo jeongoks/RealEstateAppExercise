@@ -16,7 +16,7 @@ namespace RealEstateApp
     {
         IRepository Repository;
         private Location _location;
-        public ObservableCollection<PropertyListItem> PropertiesCollection { get; } = new ObservableCollection<PropertyListItem>(); 
+        public ObservableCollection<PropertyListItem> PropertiesCollection { get; } = new ObservableCollection<PropertyListItem>();
 
         public PropertyListPage()
         {
@@ -24,13 +24,12 @@ namespace RealEstateApp
 
             Repository = TinyIoCContainer.Current.Resolve<IRepository>();
             LoadProperties();
-            BindingContext = this; 
+            BindingContext = this;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
             LoadProperties();
         }
 
@@ -48,12 +47,12 @@ namespace RealEstateApp
             try
             {
                 var properties = Repository.GetProperties();
-                var items = new List<PropertyListItem>();
+                var items = new List<PropertyListItem>();       // Instantiating a new List of PropertyListItem.
 
                 foreach (Property property in properties)
                 {
-                    var item = new PropertyListItem(property);
-                    if (_location != null)
+                    var item = new PropertyListItem(property);  // Instantiating a new PropertyListItem.
+                    if (_location != null)                      // If _locationg is different from null, then calculate the distance in our new PropertyListItem
                     {
                         item.Distance = _location.CalculateDistance((double)property.Latitude, (double)property.Longitude, DistanceUnits.Kilometers);
                     }
@@ -68,7 +67,7 @@ namespace RealEstateApp
             {
 
                 throw;
-            }            
+            }
         }
 
         private async void ItemsListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -78,16 +77,13 @@ namespace RealEstateApp
 
         private async void AddProperty_Clicked(object sender, EventArgs e)
         {
+
             await Navigation.PushAsync(new AddEditPropertyPage());
-        }    
+        }
 
         private async void SortProperties_Clicked(object sender, EventArgs e)
         {
-            _location = await Geolocation.GetLastKnownLocationAsync();
-            if (_location == null)
-            {
-                _location = await Geolocation.GetLocationAsync();
-            }
+            _location = await Geolocation.GetLocationAsync();
             LoadProperties();
         }
     }
