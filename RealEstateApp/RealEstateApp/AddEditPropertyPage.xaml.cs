@@ -31,10 +31,10 @@ namespace RealEstateApp
                 {
                     SelectedAgent = Agents.FirstOrDefault(x => x.Id == _property?.AgentId);
                 }
-               
+
             }
         }
-    
+
         private Agent _selectedAgent;
 
         public Agent SelectedAgent
@@ -46,17 +46,18 @@ namespace RealEstateApp
                 {
                     _selectedAgent = value;
                     Property.AgentId = _selectedAgent?.Id;
-                }                 
+                }
             }
         }
 
         public string StatusMessage { get; set; }
-
         public Color StatusColor { get; set; } = Color.White;
+        public bool IsOnline => Connectivity.NetworkAccess == NetworkAccess.Internet;
         #endregion
 
         public AddEditPropertyPage(Property property = null)
         {
+            var profiles = Connectivity.ConnectionProfiles;
             InitializeComponent();
 
             Repository = TinyIoCContainer.Current.Resolve<IRepository>();
@@ -72,8 +73,21 @@ namespace RealEstateApp
                 Title = "Edit Property";
                 Property = property;
             }
-         
+
             BindingContext = this;
+
+            if (!profiles.Contains(ConnectionProfile.WiFi))
+            {
+                DisplayAlert("Offline", "You're not connected to the wifi.", "Ok");
+            }
+        }        
+
+
+        void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            var access = e.NetworkAccess;
+            var profiles = e.ConnectionProfiles;
+            OnPropertyChanged(nameof(IsOnline));
         }
 
         private async void SaveProperty_Clicked(object sender, System.EventArgs e)
@@ -87,7 +101,7 @@ namespace RealEstateApp
             {
                 Repository.SaveProperty(Property);
                 await Navigation.PopToRootAsync();
-            }   
+            }
         }
 
         public bool IsValid()
