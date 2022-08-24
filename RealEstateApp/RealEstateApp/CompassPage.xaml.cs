@@ -76,9 +76,11 @@ namespace RealEstateApp
         public void ReadingCompassChanges(object sender, CompassChangedEventArgs e)
         {
 
-            CurrentHeading = e.Reading.HeadingMagneticNorth;                                            // This is the angle in portrait mode.
-            RotationAngle = CurrentHeading * - 1;                                                       // For it to always point north, we * the heading with -1.
-            var closestDegree = Math.Round(CurrentHeading / 90d, MidpointRounding.AwayFromZero) * 90;   // Rounding the heading to the nearest 90 degrees.
+            CurrentHeading = e.Reading.HeadingMagneticNorth;        // This is the angle in portrait mode.
+            RotationAngle = CurrentHeading * -1;                    // For it to always point north, we * the heading with -1.
+            // Dividing CurrentHeading with 90 before we round that number closest to the number to zero
+            // Then we multiply that value with 90 to retrieve the closest degree.
+            var closestDegree = Math.Round(CurrentHeading / 90d, MidpointRounding.AwayFromZero) * 90;       
 
             switch (closestDegree)
             {
