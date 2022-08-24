@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RealEstateApp.ImageListPage">
+    <AbsoluteLayout>
+        <CarouselView x:Name="MyCarouselView" 
+                      ItemsSource="{Binding Position}"
+                      AbsoluteLayout.LayoutBounds="0,0,1,1"
+                      AbsoluteLayout.LayoutFlags="All"
+                      IndicatorView="indicatorView">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <AbsoluteLayout>
+                        <StackLayout AbsoluteLayout.LayoutBounds="0.5,0.3,AutoSize,AutoSize"
+                                     AbsoluteLayout.LayoutFlags="PositionProportional">
+                            <Frame HasShadow="True"
+                                   Margin="20"
+                                   BorderColor="DarkGray"
+                                   CornerRadius="5"
+                                   HeightRequest="300"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="CenterAndExpand">
+                                <Image Source="{Binding Path=.}"
+                                       Margin="-10,-10,-10,0"
+                                       HeightRequest="225"
+                                       Aspect="AspectFill"/>
+                            </Frame>
+                        </StackLayout>
+                    </AbsoluteLayout>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+        <IndicatorView x:Name="indicatorView"
+                       AbsoluteLayout.LayoutBounds="0.5,0.95,100,100"
+                       AbsoluteLayout.LayoutFlags="PositionProportional"
+                       IndicatorColor="LightGray"
+                       IndicatorSize="10"
+                       SelectedIndicatorColor="Black"/>
+    </AbsoluteLayout>
+    
+</ContentPage>

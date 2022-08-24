@@ -81,5 +81,10 @@ namespace RealEstateApp
                 return;
             _cancellationToken.Cancel();
         }
+
+        private async void Image_Tapped(object sender, System.EventArgs e)
+        {
+            await Navigation.PushAsync(new ImageListPage(Property));
+        }
     }
 }
