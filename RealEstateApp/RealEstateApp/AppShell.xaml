@@ -19,6 +19,13 @@
                                  Glyph="{x:Static fa:IconFont.User}"
                                  Color="Black"/>
             </ShellContent.Icon>
-        </ShellContent>        
+        </ShellContent>
+        <ShellContent Title="Height Calculator" ContentTemplate="{DataTemplate local:HeightCalculatorPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FA-solid" 
+                                 Glyph="{x:Static fa:IconFont.ArrowDown}"
+                                 Color="Black"/>
+            </ShellContent.Icon>
+        </ShellContent>
     </FlyoutItem>
 </Shell>
