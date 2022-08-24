@@ -75,29 +75,24 @@ namespace RealEstateApp
 
         public void ReadingCompassChanges(object sender, CompassChangedEventArgs e)
         {
-
             CurrentHeading = e.Reading.HeadingMagneticNorth;        // This is the angle in portrait mode.
             RotationAngle = CurrentHeading * -1;                    // For it to always point north, we * the heading with -1.
-            // Dividing CurrentHeading with 90 before we round that number closest to the number to zero
-            // Then we multiply that value with 90 to retrieve the closest degree.
-            var closestDegree = Math.Round(CurrentHeading / 90d, MidpointRounding.AwayFromZero) * 90;       
 
-            switch (closestDegree)
+            if (CurrentHeading > 45 && CurrentHeading < 135)
             {
-                case 360:
-                    CurrentAspect = "North";
-                    break;
-                case 90:
-                    CurrentAspect = "East";
-                    break;
-                case 180:
-                    CurrentAspect = "South";
-                    break;
-                case 270:
-                    CurrentAspect = "West";
-                    break;
-                default:
-                    break;
+                CurrentAspect = "East";
+            }
+            else if (CurrentHeading > 135 && CurrentHeading < 225)
+            {
+                CurrentAspect = "South";
+            }
+            else if (CurrentHeading > 225 && CurrentHeading < 315)
+            {
+                CurrentAspect = "West";
+            }
+            else if (CurrentHeading < 45 || CurrentHeading > 360 - 45)
+            {
+                CurrentAspect = "North";
             }
         }
 
