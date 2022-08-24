@@ -84,7 +84,7 @@ namespace RealEstateApp
 
         private async void Image_Tapped(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new ImageListPage(Property));
+            await Navigation.PushModalAsync(new ImageListPage(Property));
         }
     }
 }
