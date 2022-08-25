@@ -1,4 +1,5 @@
-﻿using RealEstateApp.Models;
+﻿using Newtonsoft.Json;
+using RealEstateApp.Models;
 using RealEstateApp.Services;
 using System;
 using System.Collections.Generic;
@@ -211,12 +212,25 @@ namespace RealEstateApp
             {
                 var options = new BrowserLaunchOptions
                 {
-                    LaunchMode = BrowserLaunchMode.SystemPreferred, //BrowserLaunchMode.External,
+                    LaunchMode = BrowserLaunchMode.SystemPreferred,
                     TitleMode = BrowserTitleMode.Default,
                     PreferredToolbarColor = Color.DeepSkyBlue,
                     PreferredControlColor = Color.Black
                 };
                 await Browser.OpenAsync(Property.NeighbourhoodUrl, options);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async void BrowserExternalLink_Clicked(object sender, System.EventArgs e)
+        {
+            try
+            {
+                await Browser.OpenAsync(Property.NeighbourhoodUrl, BrowserLaunchMode.External);
             }
             catch (Exception)
             {
@@ -232,8 +246,34 @@ namespace RealEstateApp
                 File = new ReadOnlyFile(Property.ContractFilePath)
             });
         }
+
         #endregion
 
+        #region SHARE N CLIPBOARD
+        private async void ShareAlt_Clicked(object sender, EventArgs e)
+        {
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Uri = Property.NeighbourhoodUrl,
+                Subject = "A property you may be interested in",
+                Text = $"Address: {Property.Address}.\nPrice: {Property.Price}.\nBeds: {Property.Beds}.",
+                Title = "Share Property"
+            });
+        }
 
+        private async void ShareSquare_Clicked(object sender, EventArgs e)
+        {
+            await Share.RequestAsync(new ShareFileRequest
+            {
+                Title = "Share Property Contract",
+                File = new ShareFile(Property.ContractFilePath)
+            });
+        }
+
+        private async void Clipboard_Clicked(object sender, EventArgs e)
+        {
+            await Clipboard.SetTextAsync(JsonConvert.SerializeObject(Property));
+        }
+        #endregion
     }
 }
