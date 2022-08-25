@@ -177,5 +177,29 @@ namespace RealEstateApp
         }
 
         #endregion
+
+        private async void MapMarkedAlt_Clicked(object sender, EventArgs e)
+        {
+            var location = new Location((double)Property.Latitude, (double)Property.Longitude);
+            try
+            {
+                await Map.OpenAsync(location);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No map available", ex);
+            }
+        }
+
+        private async void MapDirections_Clicked(object sender, EventArgs e)
+        {
+            var location = new Location((double)Property.Latitude, (double)Property.Longitude);
+            var options = new MapLaunchOptions
+            {
+                NavigationMode = NavigationMode.Driving
+            };
+
+            await Map.OpenAsync(location, options);
+        }
     }
 }

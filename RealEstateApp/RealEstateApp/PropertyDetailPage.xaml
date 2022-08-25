@@ -14,7 +14,7 @@
     </ContentPage.ToolbarItems>
 
     <ScrollView VerticalOptions="FillAndExpand">
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" 
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" 
               Padding="15">
             <Image
                 Grid.Row="0"
@@ -26,18 +26,28 @@
                     <TapGestureRecognizer Tapped="Image_Tapped" />
                 </Image.GestureRecognizers>
             </Image>
+            <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto">
+                <Button FontFamily="FA-solid"
+                        Text="{x:Static fa:IconFont.MapMarkedAlt}"
+                        Grid.Column="0"
+                        Clicked="MapMarkedAlt_Clicked"/>
+                <Button FontFamily="FA-solid"
+                        Text="{x:Static fa:IconFont.Directions}"
+                        Grid.Column="1"
+                        Clicked="MapDirections_Clicked"/>
+            </Grid>
             <Label
-                Grid.Row="1"
+                Grid.Row="2"
                 FontAttributes="Bold"
                 FontSize="16"
                 LineBreakMode="NoWrap"
                 Text="{Binding Property.Price, StringFormat='{0:C0}'}" />
             <Label
-                Grid.Row="2"
+                Grid.Row="3"
                 FontSize="16"
                 LineBreakMode="NoWrap"
                 Text="{Binding Property.Address}" />
-            <Grid Grid.Row="3"
+            <Grid Grid.Row="4"
                   ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                 <Label
                     Grid.Column="0"
@@ -71,10 +81,10 @@
                     Text="{Binding Property.Parking}" />
             </Grid>
             <Label
-                Grid.Row="4"
+                Grid.Row="5"
                 FontSize="14"
                 Text="{Binding Property.LandSize, StringFormat='Land size: {0} &#x33a1;'}" />
-            <StackLayout Grid.Row="5" Orientation="Horizontal">
+            <StackLayout Grid.Row="6" Orientation="Horizontal">
                 <Label Margin="0,20,0,0"
                        FontAttributes="Bold"
                        FontSize="14"
@@ -91,7 +101,7 @@
                         IsVisible="{Binding IsSpeaking}"
                         HorizontalOptions="Center"/>
             </StackLayout>
-            <Grid Grid.Row="6" 
+            <Grid Grid.Row="7" 
                   RowDefinitions="Auto, Auto"
                   ColumnDefinitions="2*,6*">
                 <Label Grid.Row="0" Grid.Column="0" Text="Pitch" />
@@ -100,16 +110,16 @@
                 <Slider Grid.Row="1" Grid.Column="1" Value="{Binding SelectedVolume}" Minimum="0" Maximum="1" />
             </Grid>
             <Label
-                Grid.Row="7"
+                Grid.Row="8"
                 Margin="0,0,0,20"
                 FontSize="14"
                 Text="{Binding Property.Description}" />
             <Label
-                Grid.Row="8"
+                Grid.Row="9"
                 FontAttributes="Bold"
                 FontSize="14"
                 Text="Vendor:" />
-            <Grid Grid.Row="9" Padding="5" RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *">
+            <Grid Grid.Row="10" Padding="5" RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *">
                 <Label Text="{x:Static fa:IconFont.UserCircle}"
                        FontFamily="FA-solid"
                        Grid.Row="0" 
@@ -147,11 +157,11 @@
                 </Label>
             </Grid>
             <Label
-                Grid.Row="10"
+                Grid.Row="11"
                 FontAttributes="Bold"
                 FontSize="14"
                 Text="Listed by:" />
-            <Grid Grid.Row="11">
+            <Grid Grid.Row="12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
