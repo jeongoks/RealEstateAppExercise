@@ -33,6 +33,8 @@ namespace RealEstateApp.Models
         public double? Latitude { get; set; } = 0;
         public double? Longitude { get; set; } = 0;
 
+        public Vendor Vendor { get; set; }
+
         public string MainImageUrl => ImageUrls?.FirstOrDefault() ?? GlobalSettings.Instance.NoImageUrl;
     }
 }

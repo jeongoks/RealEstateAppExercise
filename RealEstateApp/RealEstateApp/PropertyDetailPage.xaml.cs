@@ -1,7 +1,11 @@
 ﻿using RealEstateApp.Models;
 using RealEstateApp.Services;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using TinyIoC;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -62,6 +66,7 @@ namespace RealEstateApp
             await Navigation.PushAsync(new AddEditPropertyPage(Property));
         }
 
+        #region TEXT-TO-SPEECH
         private async void SpeakButton_Clicked(object sender, System.EventArgs e)
         {
             _cancellationToken = new CancellationTokenSource();
@@ -81,10 +86,96 @@ namespace RealEstateApp
                 return;
             _cancellationToken.Cancel();
         }
+        #endregion
+
+        #region IMAGE.
 
         private async void Image_Tapped(object sender, System.EventArgs e)
         {
             await Navigation.PushModalAsync(new ImageListPage(Property));
         }
+        #endregion
+
+        #region PHONE, EMAIL, SMS.
+        private async void Phone_Tapped(object sender, System.EventArgs e)
+        {
+            string actionDisplay = await DisplayActionSheet("Call or Message?", "Cancel", null, "Call", "Message");
+            switch (actionDisplay)
+            {
+                case "Call":
+                    MakePhoneCall();
+                    break;
+                case "Message":
+                    await SendSMS();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void MakePhoneCall()
+        {
+            try
+            {
+                PhoneDialer.Open(Property.Vendor.Phone);
+            }
+            catch (ArgumentNullException anEx)
+            {
+                throw new ArgumentException("Phone number wasn't found", anEx);
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                throw new FeatureNotSupportedException("Feature isn't support on this device: ", ex);
+            }
+        }
+
+        public async Task SendSMS()
+        {
+            try
+            {
+                var message = new SmsMessage($"Hej {Property.Vendor.FirstName}, angående {Property.Address}", new[] { Property.Vendor.Phone });
+                await Sms.ComposeAsync(message);
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                throw new FeatureNotSupportedException("Feature isn't support on this device: ", ex);
+            }
+            catch (Exception ex)
+            {
+                // Other error has occurred.
+            }
+        }
+
+        private async void Email_Tapped(object sender, System.EventArgs e)
+        {
+            var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var attachmentFilePath = Path.Combine(folder, "property.txt");
+            File.WriteAllText(attachmentFilePath, $"{Property.Address}");
+            try
+            {
+                var message = new EmailMessage
+                {
+                    Subject = $"About property: {Property.Address}",
+                    Body = $"Hello {Property.Vendor.FullName},\n there's some questions about this property {Property.Address} and its price {Property.Price}",
+                    To = new List<string>() { Property.Vendor.Email },
+                    Attachments = new List<EmailAttachment>()
+                    {
+                        new EmailAttachment(attachmentFilePath)
+                    }
+                };
+                await Email.ComposeAsync(message);
+            }
+            catch (FeatureNotSupportedException fbsEx)
+            {
+                throw new FeatureNotSupportedException("Feature not supported on this device: ", fbsEx);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        #endregion
     }
 }
