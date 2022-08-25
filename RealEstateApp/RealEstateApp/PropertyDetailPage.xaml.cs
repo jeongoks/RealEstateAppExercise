@@ -178,6 +178,7 @@ namespace RealEstateApp
 
         #endregion
 
+        #region MAPS
         private async void MapMarkedAlt_Clicked(object sender, EventArgs e)
         {
             var location = new Location((double)Property.Latitude, (double)Property.Longitude);
@@ -201,5 +202,38 @@ namespace RealEstateApp
 
             await Map.OpenAsync(location, options);
         }
+        #endregion
+
+        #region OPEN BROWSER N LAUNCHER
+        public async void BrowserLink_Clicked(object sender, System.EventArgs e)
+        {
+            try
+            {
+                var options = new BrowserLaunchOptions
+                {
+                    LaunchMode = BrowserLaunchMode.SystemPreferred, //BrowserLaunchMode.External,
+                    TitleMode = BrowserTitleMode.Default,
+                    PreferredToolbarColor = Color.DeepSkyBlue,
+                    PreferredControlColor = Color.Black
+                };
+                await Browser.OpenAsync(Property.NeighbourhoodUrl, options);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async void ShowPDF_Clicked(object sender, System.EventArgs e)
+        {
+            await Launcher.OpenAsync(new OpenFileRequest
+            {
+                File = new ReadOnlyFile(Property.ContractFilePath)
+            });
+        }
+        #endregion
+
+
     }
 }

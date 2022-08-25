@@ -1,7 +1,10 @@
 ﻿using RealEstateApp.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace RealEstateApp.Services.Repository
 {
@@ -9,9 +12,11 @@ namespace RealEstateApp.Services.Repository
     {
         private List<Agent> _agents;
         private List<Property> _properties;
+        private string _contractFilePath;
 
         public MockRepository()
         {
+            LoadFiles().Wait();
             LoadProperties();
             LoadAgents();
         }
@@ -44,6 +49,21 @@ namespace RealEstateApp.Services.Repository
             }
         }
 
+        private async Task LoadFiles()
+        {
+            string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);    // Reference til vores FolderPath.
+            _contractFilePath = Path.Combine(documents, "contract.pdf");                            // Kombinér vores 'documents' med filens navn.
+
+            using (var stream = await FileSystem.OpenAppPackageFileAsync("contract.pdf"))           // Åbner en Stream som finder en fil.
+            {
+                using (var file = File.OpenWrite(_contractFilePath))                                // OpenWrite enten åbner eller opretter en ny fil
+                {
+                    stream.CopyTo(file);                                                            // Kopierer indholdet af vores stream til vores file.
+                }
+            }
+
+        }
+
         private void LoadProperties()
         {
             _properties = new List<Property>
@@ -69,8 +89,8 @@ namespace RealEstateApp.Services.Repository
                 Email = "wgrant@pluralsight.com",
                 Phone = "+61423555712"
             },
-            //NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-            //ContractFilePath = _contractFilePath,
+            NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
+            ContractFilePath = _contractFilePath,
             Aspect = "North"
         },
         new Property
@@ -88,8 +108,8 @@ namespace RealEstateApp.Services.Repository
                 Email = "acooper@pluralsight.com",
                 Phone = "+61290014312"
             },
-            //NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-            //ContractFilePath = _contractFilePath,
+            NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
+            ContractFilePath = _contractFilePath,
             Aspect = "East"
         },
         new Property
@@ -106,8 +126,8 @@ namespace RealEstateApp.Services.Repository
                 Email = "mpickering@pluralsight.com",
                 Phone = "0429008145"
             },
-            //NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-            //ContractFilePath = _contractFilePath,
+            NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
+            ContractFilePath = _contractFilePath,
             Aspect = "South"
         },
         new Property
@@ -125,8 +145,8 @@ namespace RealEstateApp.Services.Repository
                 Email = "sbyron@pluralsight.com",
                 Phone = "02 8090 6412"
             },
-            //NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-            //ContractFilePath = _contractFilePath,
+            NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
+            ContractFilePath = _contractFilePath,
             Aspect = "North"
         },
         new Property
@@ -143,8 +163,8 @@ namespace RealEstateApp.Services.Repository
                 Email = "joaks@pluralsight.com",
                 Phone = "90541823"
             },
-            //NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
-            //ContractFilePath = _contractFilePath,
+            NeighbourhoodUrl = "https://en.wikipedia.org/wiki/Collaroy,_New_South_Wales",
+            ContractFilePath = _contractFilePath,
             Aspect = "West"
         }
     };

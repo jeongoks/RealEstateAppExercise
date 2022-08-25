@@ -26,7 +26,7 @@
                     <TapGestureRecognizer Tapped="Image_Tapped" />
                 </Image.GestureRecognizers>
             </Image>
-            <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto">
+            <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto">
                 <Button FontFamily="FA-solid"
                         Text="{x:Static fa:IconFont.MapMarkedAlt}"
                         Grid.Column="0"
@@ -35,6 +35,14 @@
                         Text="{x:Static fa:IconFont.Directions}"
                         Grid.Column="1"
                         Clicked="MapDirections_Clicked"/>
+                <Button FontFamily="FA-solid"
+                        Text="{x:Static fa:IconFont.Link}"
+                        Grid.Column="2"
+                        Clicked="BrowserLink_Clicked"/>
+                <Button FontFamily="FA-solid"
+                        Text="{x:Static fa:IconFont.FileSignature}"
+                        Grid.Column="3"
+                        Clicked="ShowPDF_Clicked"/>
             </Grid>
             <Label
                 Grid.Row="2"

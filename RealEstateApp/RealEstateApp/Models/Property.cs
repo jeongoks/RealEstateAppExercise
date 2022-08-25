@@ -32,6 +32,8 @@ namespace RealEstateApp.Models
         public List<string> ImageUrls { get; set; }
         public double? Latitude { get; set; } = 0;
         public double? Longitude { get; set; } = 0;
+        public string NeighbourhoodUrl { get; set; }
+        public string ContractFilePath { get; set; }
 
         public Vendor Vendor { get; set; }
 
