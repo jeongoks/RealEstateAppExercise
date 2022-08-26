@@ -44,20 +44,30 @@ namespace RealEstateApp
             set { _isSpeaking = value; OnPropertyChanged(nameof(IsSpeaking)); }
         }
 
-        private float _selectedVolume = 1;
+        private float _selectedVolume = Preferences.Get("SelectedVolume", 1f);
 
         public float SelectedVolume
         {
             get => _selectedVolume;
-            set { _selectedVolume = value; OnPropertyChanged(nameof(SelectedVolume)); }
+            set 
+            {
+                Preferences.Set("SelectedVolume", _selectedVolume);
+                _selectedVolume = value; 
+                OnPropertyChanged(nameof(SelectedVolume)); 
+            }
         }
 
-        private float _selectedPitch = 1;
+        private float _selectedPitch = Preferences.Get("SelectedPitch", 1f);
 
         public float SelectedPitch
         {
             get => _selectedPitch;
-            set { _selectedPitch = value; OnPropertyChanged(nameof(SelectedPitch)); }
+            set 
+            {
+                Preferences.Set("SelectedPitch", _selectedPitch);
+                _selectedPitch = value; 
+                OnPropertyChanged(nameof(SelectedPitch));                
+            }
         }
 
         #endregion

@@ -18,6 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ScrollView Grid.Row="0">
             <StackLayout
@@ -71,5 +72,11 @@
                     TextColor="White" />
             </StackLayout>
         </ScrollView>
+        <Button Grid.Row="2"
+                Text="Reset TTS settings"
+                x:Name="ResetTTS"
+                Clicked="ResetTTS_Clicked"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"/>
     </Grid>
 </ContentPage>
